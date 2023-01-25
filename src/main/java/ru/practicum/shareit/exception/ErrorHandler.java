@@ -12,19 +12,19 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> HandlerEmailException(EmailException e) {
+    public Map<String, String> handlerEmailException(EmailException e) {
         return Map.of("Email уже используется", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> HandlerNotFoundException(NotFoundException e) {
+    public Map<String, String> handlerNotFoundException(NotFoundException e) {
         return Map.of("Обект не найден", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> HandlerNotFoundException(BadRequestException e) {
+    public Map<String, String> handlerNotFoundException(BadRequestException e) {
         return Map.of("Ошибка запроса", e.getMessage());
     }
 }
