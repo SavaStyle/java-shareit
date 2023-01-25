@@ -9,4 +9,10 @@ interface ItemRepository {
     Item save(Item item);
 
     void deleteByUserIdAndItemId(long userId, long itemId);
+
+    Item updateItem(long userId, Item item);
+
+    Item getItemById(long itemId);
+
+    List<Item> search(String text);
 }

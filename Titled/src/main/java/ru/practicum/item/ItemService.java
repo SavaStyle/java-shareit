@@ -7,5 +7,11 @@ interface ItemService {
 
     List<Item> getItems(long userId);
 
+    Item updateItem(long userId, Item item);
+
     void deleteItem(long userId, long itemId);
+
+    Item getItemById(long itemId);
+
+    List<Item> search(String text);
 }

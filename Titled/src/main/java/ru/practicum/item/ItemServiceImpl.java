@@ -22,7 +22,25 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Item updateItem(long userId, Item item) {
+        if (item.getUserId().equals(userId)) {
+            repository.updateItem(userId, item);
+        }
+        return item;
+    }
+
+    @Override
     public void deleteItem(long userId, long itemId) {
         repository.deleteByUserIdAndItemId(userId, itemId);
+    }
+
+    @Override
+    public Item getItemById(long itemId) {
+        return repository.getItemById(itemId);
+    }
+
+    @Override
+    public List<Item> search(String text) {
+        return repository.search(text);
     }
 }

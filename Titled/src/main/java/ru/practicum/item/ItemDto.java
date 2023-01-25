@@ -1,14 +1,16 @@
 package ru.practicum.item;
 
 import lombok.Data;
-import ru.practicum.request.ItemRequest;
 
 @Data
-public class Item {
+public class ItemDto {
     private Long id;
     private Long userId;
-    private ItemRequest request;
+    private String request;
     private String name;
     private String description;
     private boolean available;
+
+    public ItemDto(String name, String description, boolean available, Long aLong) {
+    }
 }
