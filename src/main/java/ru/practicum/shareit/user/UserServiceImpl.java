@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.user.Interfaces.UserRepository;
 import ru.practicum.shareIt.user.Interfaces.UserService;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.practicum.shareIt.user.UserMapper.fromUserDto;
+import static ru.practicum.shareIt.user.UserMapper.toUserDto;
 
 @Service
 @RequiredArgsConstructor
@@ -15,20 +18,25 @@ class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public Collection<User> getAllUsers() {
-        return repository.findAll();
+    public List<UserDto> getAllUsers() {
+        return repository
+                .findAll()
+                .stream()
+                .map(UserMapper::toUserDto).
+                collect(Collectors.toList());
     }
 
     @Override
-    public User saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) {
         User user = fromUserDto(userDto);
         repository.chekEmail(user.getEmail());
-        return repository.save(user);
+        repository.save(user);
+        return toUserDto(user);
     }
 
     @Override
-    public User updateUser(UserDto userDto, long userId) {
-        User user = getUserById(userId);
+    public UserDto updateUser(UserDto userDto, long userId) {
+        User user = repository.getById(userId);
         if (userDto.getName() != null) {
             user.setName(userDto.getName());
         }
@@ -36,7 +44,8 @@ class UserServiceImpl implements UserService {
             repository.chekEmail(userDto.getEmail());
             user.setEmail(userDto.getEmail());
         }
-        return repository.update(user);
+        repository.update(user);
+        return toUserDto(user);
     }
 
     @Override
@@ -45,7 +54,8 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(long userId) {
-        return repository.getById(userId);
+    public UserDto getUserById(long userId) {
+        User user = repository.getById(userId);
+        return toUserDto(user);
     }
 }

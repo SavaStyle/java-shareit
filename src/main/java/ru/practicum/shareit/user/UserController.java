@@ -8,6 +8,7 @@ import ru.practicum.shareIt.user.Interfaces.Update;
 import ru.practicum.shareIt.user.Interfaces.UserService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,17 +17,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public Collection<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PostMapping
-    public User saveUser(@Validated({Create.class}) @RequestBody UserDto userDto) {
+    public UserDto saveUser(@Validated({Create.class}) @RequestBody UserDto userDto) {
         return userService.saveUser(userDto);
     }
 
     @PatchMapping("/{userId}")
-    public User updateUser(@Validated(Update.class) @RequestBody UserDto userDto, @PathVariable String userId) {
+    public UserDto updateUser(@Validated(Update.class) @RequestBody UserDto userDto, @PathVariable String userId) {
         return userService.updateUser(userDto, Long.parseLong(userId));
     }
 
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getById(@PathVariable long userId) {
+    public UserDto getById(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 }

@@ -7,8 +7,10 @@ import ru.practicum.shareIt.user.Interfaces.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.practicum.shareIt.item.ItemMapper.fromItemDto;
+import static ru.practicum.shareIt.item.ItemMapper.toItemDto;
 
 @Service
 @RequiredArgsConstructor
@@ -17,20 +19,25 @@ class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
 
     @Override
-    public List<Item> getItemsByOwnerId(long userId) {
-        return repository.getItemsByOwnerId(userId);
+    public List<ItemDto> getItemsByOwnerId(long userId) {
+        return repository
+                .getItemsByOwnerId(userId)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Item addNewItem(long userId, ItemDto itemDto) {
+    public ItemDto addNewItem(long userId, ItemDto itemDto) {
         userRepository.getById(userId);
         Item item = fromItemDto(itemDto);
         item.setOwnerId(userId);
-        return repository.save(item);
+        repository.save(item);
+        return toItemDto(item);
     }
 
     @Override
-    public Item updateItem(Long userId, Long itemId, ItemDto itemDto) {
+    public ItemDto updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item item = repository.getItemById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Item не найден");
         });
@@ -47,7 +54,8 @@ class ItemServiceImpl implements ItemService {
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
         }
-        return repository.updateItem(userId, itemId, item);
+        repository.updateItem(userId, itemId, item);
+        return toItemDto(item);
     }
 
     @Override
@@ -56,16 +64,20 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getItemById(long itemId) {
-        return repository.getItemById(itemId).orElseThrow(() -> {
+    public ItemDto getItemById(long itemId) {
+        return toItemDto(repository.getItemById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Item не найден");
-        });
+        }));
     }
 
     @Override
-    public List<Item> search(String text) {
+    public List<ItemDto> search(String text) {
         if (text.isBlank())
             return Collections.emptyList();
-        return repository.search(text);
+        return repository
+                .search(text)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }

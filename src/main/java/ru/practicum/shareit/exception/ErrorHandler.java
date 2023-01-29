@@ -1,30 +1,44 @@
 package ru.practicum.shareIt.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+
 @RestControllerAdvice
+@Slf4j
 public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handlerEmailException(EmailException e) {
-        return Map.of("Email уже используется", e.getMessage());
+        log.error(e.toString());
+        return Map.of("409", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handlerNotFoundException(NotFoundException e) {
-        return Map.of("Обект не найден", e.getMessage());
+        log.error(e.toString());
+        return Map.of("404", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handlerNotFoundException(BadRequestException e) {
-        return Map.of("Ошибка запроса", e.getMessage());
+    public Map<String, String> handlerNotFoundException(MethodArgumentNotValidException e) {
+        log.error(e.toString());
+        return Map.of("400", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> internalException(final Throwable e) {
+        log.error(e.toString());
+        return Map.of("500", e.getMessage());
     }
 }

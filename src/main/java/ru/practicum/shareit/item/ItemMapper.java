@@ -8,4 +8,12 @@ public class ItemMapper {
                 itemDto.getAvailable());
         return item;
     }
+
+    public static ItemDto toItemDto(Item item) {
+        ItemDto itemDto = new ItemDto(item.getId(),
+                item.getName(),
+                item.getDescription(),
+                item.getAvailable());
+        return itemDto;
+    }
 }
