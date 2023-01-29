@@ -7,7 +7,6 @@ import ru.practicum.shareIt.user.Interfaces.Create;
 import ru.practicum.shareIt.user.Interfaces.Update;
 import ru.practicum.shareIt.user.Interfaces.UserService;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController

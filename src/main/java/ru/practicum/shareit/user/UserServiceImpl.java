@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.user.Interfaces.UserRepository;
 import ru.practicum.shareIt.user.Interfaces.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

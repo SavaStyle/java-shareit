@@ -5,7 +5,7 @@ import java.util.List;
 interface ItemService {
     ItemDto addNewItem(long userId, ItemDto itemDto);
 
-    List<ItemDto>  getItemsByOwnerId(long userId);
+    List<ItemDto> getItemsByOwnerId(long userId);
 
     ItemDto updateItem(Long userId, Long id, ItemDto itemDto);
 
