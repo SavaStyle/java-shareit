@@ -21,8 +21,8 @@ class UserServiceImpl implements UserService {
         return repository
                 .findAll()
                 .stream()
-                .map(UserMapper::toUserDto).
-                collect(Collectors.toList());
+                .map(UserMapper::toUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
