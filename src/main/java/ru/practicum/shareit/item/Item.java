@@ -25,7 +25,7 @@ public class Item {
     private Long request;
     @Column(name = "item_name", length = 100)
     private String name;
-    @Column(length = 100)
+    @Column(name = "description", length = 100)
     private String description;
     @Column(name = "is_available")
     private Boolean available;
