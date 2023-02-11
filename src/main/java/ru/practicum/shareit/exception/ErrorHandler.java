@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
-
-
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
@@ -30,15 +28,29 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handlerNotFoundException(MethodArgumentNotValidException e) {
+    public Map<String, String> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.toString());
+        return Map.of("400", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handlerBadRequestException(BadRequestException e) {
         log.error(e.toString());
         return Map.of("400", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> internalException(final Throwable e) {
+    public Map<String, String> handlerinternalException(final Throwable e) {
         log.error(e.toString());
         return Map.of("500", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handlerUnsupportedStatusException(StatusException e) {
+        log.error(e.toString());
+        return Map.of("error", e.getMessage());
     }
 }

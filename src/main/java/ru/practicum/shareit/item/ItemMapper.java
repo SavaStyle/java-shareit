@@ -9,11 +9,14 @@ public class ItemMapper {
         return item;
     }
 
-    public static ItemDto toItemDto(Item item) {
-        ItemDto itemDto = new ItemDto(item.getId(),
+    public static ItemDtoResponse toItemDto(Item item) {
+        ItemDtoResponse itemDtoResponse = new ItemDtoResponse(
+                item.getId(),
+                item.getOwner(),
+                item.getRequest(),
                 item.getName(),
-                item.getDescription(),
-                item.getAvailable());
-        return itemDto;
+                item.getAvailable(),
+                item.getDescription());
+        return itemDtoResponse;
     }
 }

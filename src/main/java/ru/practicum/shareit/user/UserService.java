@@ -1,6 +1,4 @@
-package ru.practicum.shareIt.user.Interfaces;
-
-import ru.practicum.shareIt.user.UserDto;
+package ru.practicum.shareIt.user;
 
 import java.util.List;
 

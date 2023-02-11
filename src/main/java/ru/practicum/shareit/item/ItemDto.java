@@ -18,6 +18,7 @@ public class ItemDto {
     @NotNull(groups = Create.class)
     private Boolean available;
 
+
     public ItemDto(Long id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;

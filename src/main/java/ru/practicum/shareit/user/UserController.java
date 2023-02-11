@@ -5,7 +5,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareIt.user.Interfaces.Create;
 import ru.practicum.shareIt.user.Interfaces.Update;
-import ru.practicum.shareIt.user.Interfaces.UserService;
 
 import java.util.List;
 
