@@ -3,7 +3,6 @@ package ru.practicum.shareIt.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.booking.Booking;
-import ru.practicum.shareIt.booking.BookingRepository;
 import ru.practicum.shareIt.booking.BookingService;
 import ru.practicum.shareIt.exception.BadRequestException;
 import ru.practicum.shareIt.exception.NotFoundException;
@@ -13,7 +12,6 @@ import ru.practicum.shareIt.item.comments.CommentMapper;
 import ru.practicum.shareIt.item.comments.CommentRepository;
 import ru.practicum.shareIt.user.User;
 import ru.practicum.shareIt.user.UserRepository;
-import ru.practicum.shareIt.user.UserService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -23,10 +21,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareIt.booking.BookingMapper.toBookingDto;
-import static ru.practicum.shareIt.item.comments.CommentMapper.fromCommentDto;
-import static ru.practicum.shareIt.item.comments.CommentMapper.toCommentDto;
 import static ru.practicum.shareIt.item.ItemMapper.fromItemDto;
 import static ru.practicum.shareIt.item.ItemMapper.toItemDto;
+import static ru.practicum.shareIt.item.comments.CommentMapper.fromCommentDto;
+import static ru.practicum.shareIt.item.comments.CommentMapper.toCommentDto;
 
 @Service
 @RequiredArgsConstructor
