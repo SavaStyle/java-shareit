@@ -13,7 +13,6 @@ import ru.practicum.shareIt.item.comments.CommentRepository;
 import ru.practicum.shareIt.user.User;
 import ru.practicum.shareIt.user.UserRepository;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,7 +56,6 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional
     public ItemDtoResponse updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item item = repository.findById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Item не найден");
