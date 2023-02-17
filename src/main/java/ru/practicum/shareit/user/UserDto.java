@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 public class UserDto {
-
     private Long id;
     @NotBlank(groups = {Create.class})
     private String name;

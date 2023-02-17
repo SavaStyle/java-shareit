@@ -1,4 +1,4 @@
-package ru.practicum.shareIt.booking;
+package ru.practicum.shareIt.item.comments;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,26 +10,26 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@Entity
+@Table(name = "comments")
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "bookings")
-public class Booking {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id", nullable = false)
     private Long id;
+    @Column(name = "comment_text", nullable = false)
+    private String text;
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
-    @Column(name = "start_time", nullable = false)
-    private LocalDateTime start;
-    @Column(name = "end_time", nullable = false)
-    private LocalDateTime end;
     @ManyToOne
-    @JoinColumn(name = "booker_id", nullable = false)
-    private User booker;
-    @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+    private LocalDateTime created;
+
+    public Comment(String text) {
+        this.text = text;
+    }
 
 }
