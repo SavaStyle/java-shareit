@@ -1,7 +1,6 @@
 package ru.practicum.shareIt.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +56,7 @@ class BookingControllerTest {
                 true);
 
         bookingDto = new BookingDto(
-                1l,
+                1L,
                 null,
                 null,
                 1L,

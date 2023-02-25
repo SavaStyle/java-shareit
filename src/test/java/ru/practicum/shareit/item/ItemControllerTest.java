@@ -54,7 +54,7 @@ class ItemControllerTest {
                 true);
 
         commentDto = new CommentDto(
-                1l,
+                1L,
                 "text",
                 "John",
                 LocalDateTime.now());
@@ -97,7 +97,7 @@ class ItemControllerTest {
     @Test
     @SneakyThrows
     void update_ok() {
-        when(itemService.updateItem(1l, 1l, itemDto)).thenReturn(toItemDtoTest(itemDto));
+        when(itemService.updateItem(1L, 1L, itemDto)).thenReturn(toItemDtoTest(itemDto));
 
         mvc.perform(patch("/items/1")
                         .contentType(MediaType.APPLICATION_JSON)

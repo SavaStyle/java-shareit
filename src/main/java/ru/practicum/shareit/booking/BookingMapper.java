@@ -2,12 +2,7 @@ package ru.practicum.shareIt.booking;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.shareIt.item.Item;
-import ru.practicum.shareIt.item.ItemDto;
 import ru.practicum.shareIt.user.User;
-import ru.practicum.shareIt.user.UserDto;
-
-import static ru.practicum.shareIt.item.ItemMapper.fromItemDto;
-import static ru.practicum.shareIt.user.UserMapper.fromUserDto;
 
 
 @UtilityClass
