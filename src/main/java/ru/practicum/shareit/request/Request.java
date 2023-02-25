@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "requests")
 public class Request {
+
     @Id
     @GeneratedValue
     @Column(name = "request_id", nullable = false)
@@ -25,4 +26,5 @@ public class Request {
     private User requestor;
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
+
 }
