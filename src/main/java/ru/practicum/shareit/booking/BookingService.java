@@ -8,14 +8,11 @@ public interface BookingService {
 
     BookingDtoResponse changeStatus(long userId, long bookingId, boolean approved);
 
-
     BookingDtoResponse getById(long userId, long bookingId);
 
+    Collection<BookingDtoResponse> getAllByBooker(long bookerId, String state, int from, int size);
 
-    Collection<BookingDtoResponse> getAllByBooker(long bookerId, String state);
-
-
-    Collection<BookingDtoResponse> getAllByOwner(long bookerId, String state);
+    Collection<BookingDtoResponse> getAllByOwner(long bookerId, String state, int from, int size);
 
     Booking findFirstByItemIdAndEndBefore(long ownerId, LocalDateTime end);
 

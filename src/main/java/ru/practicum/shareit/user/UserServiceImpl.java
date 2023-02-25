@@ -34,7 +34,7 @@ class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, long userId) {
         User user = repository.findById(userId).orElseThrow(() -> {
-            throw new NotFoundException("User not found " + userId);
+            throw new NotFoundException("User not found");
         });
         if (userDto.getName() != null) {
             user.setName(userDto.getName());

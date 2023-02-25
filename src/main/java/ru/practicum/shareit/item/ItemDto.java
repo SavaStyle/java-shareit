@@ -1,16 +1,20 @@
 package ru.practicum.shareIt.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareIt.user.Interfaces.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemDto {
     private Long id;
     private Long ownerId;
-    private Long request;
+    private Long requestId;
     @NotBlank(groups = Create.class)
     private String name;
     @NotBlank(groups = Create.class)

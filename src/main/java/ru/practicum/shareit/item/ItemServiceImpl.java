@@ -1,6 +1,7 @@
 package ru.practicum.shareIt.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.booking.Booking;
 import ru.practicum.shareIt.booking.BookingService;
@@ -28,15 +29,21 @@ import static ru.practicum.shareIt.item.comments.CommentMapper.toCommentDto;
 @Service
 @RequiredArgsConstructor
 class ItemServiceImpl implements ItemService {
+
     private final ItemRepository repository;
     private final UserRepository userRepository;
     private final BookingService bookingService;
     private final CommentRepository commentRepository;
 
     @Override
-    public List<ItemDtoResponse> getItemsByOwnerId(long userId) {
+    public List<ItemDtoResponse> getItemsByOwnerId(long userId, int from, int size) {
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository
-                .findAllByOwnerId(userId)
+                .findAllByOwnerId(userId, pageRequest)
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .map(this::setBookings)
@@ -97,11 +104,16 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoResponse> search(String text) {
+    public List<ItemDtoResponse> search(String text, int from, int size) {
         if (text.isBlank())
             return Collections.emptyList();
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository
-                .search(text)
+                .search(text, pageRequest)
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
@@ -146,5 +158,13 @@ class ItemServiceImpl implements ItemService {
         comment.setCreated(LocalDateTime.now());
         commentRepository.save(comment);
         return toCommentDto(comment);
+    }
+
+    @Override
+    public List<ItemDtoResponse> getItemsByRequestId(long requestId) {
+        return repository.findAllByRequestId(requestId)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }

@@ -22,7 +22,7 @@ public class Item {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
     @Column(name = "request_id", length = 100)
-    private Long request;
+    private Long requestId;
     @Column(name = "item_name", length = 100, nullable = false)
     private String name;
     @Column(name = "description", length = 100, nullable = false)
@@ -30,7 +30,9 @@ public class Item {
     @Column(name = "is_available", nullable = false)
     private Boolean available;
 
-    public Item(String name, String description, boolean available) {
+
+    public Item(Long requestId, String name, String description, Boolean available) {
+        this.requestId = requestId;
         this.name = name;
         this.description = description;
         this.available = available;
