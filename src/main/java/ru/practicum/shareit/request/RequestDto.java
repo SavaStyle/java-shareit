@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestDto1 {
+public class RequestDto  {
 
     private Long id;
     @NotNull

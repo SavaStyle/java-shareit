@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestDtoResponse1 {
+public class RequestDtoResponse {
 
     private Long id;
     private String description;
