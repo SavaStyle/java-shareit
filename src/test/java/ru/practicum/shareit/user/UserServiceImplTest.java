@@ -23,12 +23,16 @@ import static ru.practicum.shareIt.user.UserMapper.toUserDto;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
-    @Mock
-    UserRepository userRepository;
+
     @InjectMocks
     UserServiceImpl userService;
+
+    @Mock
+    UserRepository userRepository;
+
     private UserDto userDto;
     private User user;
+
     @BeforeEach
     void start() {
         userDto = new UserDto(
