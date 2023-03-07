@@ -28,6 +28,17 @@ public class BookingMapper {
                 booking.getBooker().getId());
     }
 
+    public static BookingDto toBookingDtoDto(Booking booking) {
+        return new BookingDto(
+                booking.getId(),
+                booking.getStart(),
+                booking.getEnd(),
+                booking.getItem().getId(),
+                booking.getBooker().getId(),
+                booking.getStatus());
+    }
+
+
     public static BookingDtoResponse toBookingDtoTest(BookingDto bookingDto, Item item, User user) {
         return new BookingDtoResponse(
                 bookingDto.getId(),

@@ -35,6 +35,7 @@ class ItemServiceImpl implements ItemService {
     private final BookingService bookingService;
     private final CommentRepository commentRepository;
 
+
     @Override
     public List<ItemDtoResponse> getItemsByOwnerId(long userId, int from, int size) {
         if (size <= 0 || from < 0) {

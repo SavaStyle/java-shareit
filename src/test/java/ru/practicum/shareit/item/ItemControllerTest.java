@@ -34,9 +34,7 @@ class ItemControllerTest {
 
     private ItemDto itemDto;
     private UserDto userDto;
-
     private CommentDto commentDto;
-
 
     @BeforeEach
     void start() {

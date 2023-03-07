@@ -15,7 +15,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static ru.practicum.shareIt.user.UserMapper.fromUserDto;
 import static ru.practicum.shareIt.user.UserMapper.toUserDto;
 
 
@@ -25,11 +27,8 @@ class UserServiceImplTest {
     UserRepository userRepository;
     @InjectMocks
     UserServiceImpl userService;
-
     private UserDto userDto;
     private User user;
-
-
     @BeforeEach
     void start() {
         userDto = new UserDto(
@@ -52,7 +51,7 @@ class UserServiceImplTest {
 
     @Test
     void saveUser_ok() {
-        when(userRepository.save(any())).thenReturn(user);
+        when(userRepository.save(any())).thenReturn(fromUserDto(userDto));
 
         UserDto userDto1 = userService.saveUser(userDto);
 
@@ -60,8 +59,11 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser() {
-        User userU = new User(5L, "1", "2.doe@mail.com");
+    void updateUser_ok() {
+        User userU = new User();
+        userU.setId(5L);
+        userU.setName("1");
+        userU.setEmail("2.doe@mail.com");
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userU));
         when(userRepository.save(any(User.class))).thenReturn(userU);
 
@@ -70,6 +72,13 @@ class UserServiceImplTest {
 
         assertEquals("John", userU.getName());
         assertEquals("john.doe@mail.com", userU.getEmail());
+    }
+
+    @Test
+    void updateUser_notFounded() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getUserById(userDto.getId())).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -84,5 +93,12 @@ class UserServiceImplTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.getUserById(99)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void deleteUser() {
+        userService.deleteUser(userDto.getId());
+
+        verify(userRepository).deleteById(userDto.getId());
     }
 }
