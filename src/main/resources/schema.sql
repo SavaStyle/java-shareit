@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS requests
     description  VARCHAR(225) NOT NULL,
     requestor_id BIGINT       NOT NULL,
     created      TIMESTAMP    NOT NULL,
-    CONSTRAINT pk_request PRIMARY KEY (request_id),
-    CONSTRAINT fk_request_user FOREIGN KEY (requestor_id) REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_requestor
+        FOREIGN KEY (REQUESTOR_ID)
+            REFERENCES USERS (user_id)
 );
