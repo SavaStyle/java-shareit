@@ -85,7 +85,7 @@ class ItemServiceImplTest {
 
 
     @Test
-    void addNewItem() {
+    void addNewItem_ok() {
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
         when(itemRepository.save(any(Item.class))).thenReturn(item);
 
@@ -96,6 +96,20 @@ class ItemServiceImplTest {
         assertEquals(itemDto.getName(), actualItem.getName());
         assertEquals(itemDto.getDescription(), actualItem.getDescription());
         assertEquals(itemDto.getAvailable(), actualItem.getAvailable());
+    }
+
+    @Test
+    void addNewItem_userNotFounded() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> itemService.addNewItem(user.getId(), itemDto)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void updateItem_ownerNotFounded() {
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> itemService.updateItem(user.getId(), item.getId(), itemDto)).isInstanceOf(NotFoundException.class);
     }
 
     @Test

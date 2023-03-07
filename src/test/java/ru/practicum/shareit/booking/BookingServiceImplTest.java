@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareIt.exception.NotFoundException;
+import ru.practicum.shareIt.exception.StatusException;
 import ru.practicum.shareIt.item.Item;
 import ru.practicum.shareIt.item.ItemRepository;
 import ru.practicum.shareIt.user.User;
@@ -114,6 +115,13 @@ class BookingServiceImplTest {
     }
 
     @Test
+    void getAllByBooker_error() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> bookingService.getAllByBooker(1, "error", 0, 10)).isInstanceOf(StatusException.class);
+    }
+
+    @Test
     void getAllByBooker_ALL() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         bookingService.getAllByBooker(1, "ALL", 0, 10);
@@ -153,6 +161,13 @@ class BookingServiceImplTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         bookingService.getAllByBooker(1, "REJECTED", 0, 10);
         verify(bookingRepository).findAllByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
+    }
+
+    @Test
+    void getAllByOwner_error() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> bookingService.getAllByOwner(1, "error", 0, 10)).isInstanceOf(StatusException.class);
     }
 
     @Test
