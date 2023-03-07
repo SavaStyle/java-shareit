@@ -45,11 +45,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<RequestDtoResponse> getAllByRequestorId(long id) {
         UserDto userDto = userService.getUserById(id);
-        return requestRepository.getAllByRequestorId(id)
-                .stream()
-                .map(RequestMapper::toRequestDto)
-                .map(this::itemsSet)
-                .collect(Collectors.toList());
+        return requestRepository.getAllByRequestorId(id).stream().map(RequestMapper::toRequestDto).map(this::itemsSet).collect(Collectors.toList());
     }
 
     @Override
@@ -60,11 +56,7 @@ public class RequestServiceImpl implements RequestService {
         }
         int page = from / size;
         PageRequest pageRequest = PageRequest.of(page, size);
-        return requestRepository.findAllByRequestorIdIsNotOrderByCreatedDesc(userId, pageRequest)
-                .stream()
-                .map(RequestMapper::toRequestDto)
-                .map(this::itemsSet)
-                .collect(Collectors.toList());
+        return requestRepository.findAllByRequestorIdIsNotOrderByCreatedDesc(userId, pageRequest).stream().map(RequestMapper::toRequestDto).map(this::itemsSet).collect(Collectors.toList());
     }
 
     @Override
@@ -82,6 +74,5 @@ public class RequestServiceImpl implements RequestService {
         });
         return itemsSet(toRequestDto(request));
     }
-
 }
 
