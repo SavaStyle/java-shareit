@@ -16,6 +16,13 @@ public class RequestMapper {
                 request.getCreated());
     }
 
+    public static RequestDto toRequestDtoDto(Request request) {
+        return new RequestDto(request.getId(),
+                request.getDescription(),
+                request.getRequestor(),
+                request.getCreated());
+    }
+
     public static RequestDtoResponse toRequestDtoTest(RequestDto requestDto) {
         return new RequestDtoResponse(requestDto.getId(),
                 requestDto.getDescription(),
