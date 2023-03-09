@@ -12,6 +12,7 @@ import ru.practicum.shareIt.user.UserDto;
 import ru.practicum.shareIt.user.UserRepository;
 import ru.practicum.shareIt.user.UserService;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class RequestServiceImpl implements RequestService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public RequestDtoResponse addNewRequest(long userId, RequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("User not found");

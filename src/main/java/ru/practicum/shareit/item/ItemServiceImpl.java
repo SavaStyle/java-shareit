@@ -14,6 +14,7 @@ import ru.practicum.shareIt.item.comments.CommentRepository;
 import ru.practicum.shareIt.user.User;
 import ru.practicum.shareIt.user.UserRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,6 +54,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDtoResponse addNewItem(long userId, ItemDto itemDto) {
         User owner = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("Owner не найден");
@@ -64,6 +66,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDtoResponse updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item item = repository.findById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Item не найден");
@@ -88,6 +91,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(long userId, long itemId) {
         repository.deleteById(itemId);
     }
@@ -142,6 +146,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDto addComment(long userId, CommentDto commentDto, long itemId) {
         Item item = repository.findById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Объект не найден");

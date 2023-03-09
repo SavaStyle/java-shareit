@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.exception.NotFoundException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto saveUser(UserDto userDto) {
         User user = fromUserDto(userDto);
         repository.save(user);
@@ -32,6 +34,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(UserDto userDto, long userId) {
         User user = repository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("User not found");

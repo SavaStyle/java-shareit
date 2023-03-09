@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Collection;
 
 @RestController
@@ -30,16 +32,16 @@ public class BookingController {
 
     @GetMapping
     public Collection<BookingDtoResponse> getAllByBooker(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                         @RequestParam(defaultValue = "0") Integer from,
-                                                         @RequestParam(defaultValue = "10") Integer size,
+                                                         @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                         @Positive @RequestParam(defaultValue = "10") Integer size,
                                                          @RequestParam(defaultValue = "ALL") String state) {
         return bookingService.getAllByBooker(userId, state, from, size);
     }
 
     @GetMapping("/owner")
     public Collection<BookingDtoResponse> getByOwner(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                     @RequestParam(defaultValue = "0") Integer from,
-                                                     @RequestParam(defaultValue = "10") Integer size,
+                                                     @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                     @Positive @RequestParam(defaultValue = "10") Integer size,
                                                      @RequestParam(defaultValue = "ALL") String state) {
         return bookingService.getAllByOwner(userId, state, from, size);
     }

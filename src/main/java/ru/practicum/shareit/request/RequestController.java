@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -25,8 +27,8 @@ public class RequestController {
 
     @GetMapping("/all")
     public List<RequestDtoResponse> getAll(@RequestHeader("X-Sharer-User-Id") long userId,
-                                           @RequestParam(defaultValue = "0") Integer from,
-                                           @RequestParam(defaultValue = "1") Integer size) {
+                                           @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                           @Positive @RequestParam(defaultValue = "1") Integer size) {
         return requestService.getAll(userId, from, size);
     }
 

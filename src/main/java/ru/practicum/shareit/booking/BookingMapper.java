@@ -1,11 +1,11 @@
 package ru.practicum.shareIt.booking;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareIt.item.Item;
 import ru.practicum.shareIt.user.User;
 
-
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookingMapper {
 
     public static Booking fromBookingDto(BookingDto bookingDto, Item item, User user) {

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareIt.item.comments.CommentDto;
 import ru.practicum.shareIt.user.Interfaces.Create;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -43,8 +45,8 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDtoResponse> searchItem(@RequestParam String text,
-                                            @RequestParam(defaultValue = "0") Integer from,
-                                            @RequestParam(defaultValue = "10") Integer size) {
+                                            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                            @Positive @RequestParam(defaultValue = "10") Integer size) {
         return itemService.search(text.toLowerCase(), from, size);
     }
 
