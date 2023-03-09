@@ -1,6 +1,7 @@
 package ru.practicum.shareIt.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.booking.Booking;
 import ru.practicum.shareIt.booking.BookingService;
@@ -13,6 +14,7 @@ import ru.practicum.shareIt.item.comments.CommentRepository;
 import ru.practicum.shareIt.user.User;
 import ru.practicum.shareIt.user.UserRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,15 +30,22 @@ import static ru.practicum.shareIt.item.comments.CommentMapper.toCommentDto;
 @Service
 @RequiredArgsConstructor
 class ItemServiceImpl implements ItemService {
+
     private final ItemRepository repository;
     private final UserRepository userRepository;
     private final BookingService bookingService;
     private final CommentRepository commentRepository;
 
+
     @Override
-    public List<ItemDtoResponse> getItemsByOwnerId(long userId) {
+    public List<ItemDtoResponse> getItemsByOwnerId(long userId, int from, int size) {
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository
-                .findAllByOwnerId(userId)
+                .findAllByOwnerId(userId, pageRequest)
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .map(this::setBookings)
@@ -45,6 +54,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDtoResponse addNewItem(long userId, ItemDto itemDto) {
         User owner = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("Owner не найден");
@@ -56,6 +66,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDtoResponse updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item item = repository.findById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Item не найден");
@@ -80,6 +91,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(long userId, long itemId) {
         repository.deleteById(itemId);
     }
@@ -97,11 +109,16 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoResponse> search(String text) {
+    public List<ItemDtoResponse> search(String text, int from, int size) {
         if (text.isBlank())
             return Collections.emptyList();
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository
-                .search(text)
+                .search(text, pageRequest)
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
@@ -109,7 +126,7 @@ class ItemServiceImpl implements ItemService {
 
     public ItemDtoResponse setBookings(ItemDtoResponse itemDtoResponse) {
         Booking lastBooking = bookingService.findFirstByItemIdAndEndBefore(itemDtoResponse.getId(), LocalDateTime.now());
-        Booking nextBooking = bookingService.findFirstByItemIdAndEndAfter(itemDtoResponse.getId(), LocalDateTime.now());
+        Booking nextBooking = bookingService.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(itemDtoResponse.getId(), LocalDateTime.now());
         if (lastBooking != null) {
             itemDtoResponse.setLastBooking(toBookingDto(lastBooking));
         }
@@ -129,6 +146,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDto addComment(long userId, CommentDto commentDto, long itemId) {
         Item item = repository.findById(itemId).orElseThrow(() -> {
             throw new NotFoundException("Объект не найден");
@@ -146,5 +164,13 @@ class ItemServiceImpl implements ItemService {
         comment.setCreated(LocalDateTime.now());
         commentRepository.save(comment);
         return toCommentDto(comment);
+    }
+
+    @Override
+    public List<ItemDtoResponse> getItemsByRequestId(long requestId) {
+        return repository.findAllByRequestId(requestId)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }
