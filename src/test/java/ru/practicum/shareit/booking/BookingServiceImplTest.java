@@ -221,9 +221,9 @@ class BookingServiceImplTest {
 
     @Test
     void findFirstByItemIdAndEndAfter() {
-        when(bookingRepository.findFirstByItemIdAndEndAfterOrderByStartAsc(anyLong(), any())).thenReturn(booking);
+        when(bookingRepository.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(anyLong(), any(), any())).thenReturn(booking);
 
-        assertEquals(booking, bookingService.findFirstByItemIdAndEndAfter(item.getId(), LocalDateTime.now()));
+        assertEquals(booking, bookingService.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(item.getId(), LocalDateTime.now()));
     }
 
     @Test

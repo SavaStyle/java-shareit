@@ -160,10 +160,16 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findFirstByItemIdAndEndBeforeOrderByEndDesc(itemId, end);
     }
 
+/*    @Override
+    public Booking findFirstByItemIdAndEndAfter(long ownerId, LocalDateTime end) {
+        return null;
+    }*/
+
     @Override
-    public Booking findFirstByItemIdAndEndAfter(long itemId, LocalDateTime end) {
+    public Booking findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(long itemId, LocalDateTime end) {
         return bookingRepository.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(itemId, end, BookingStatus.REJECTED);
     }
+    // findFirstByItemIdAndEndAfter
 
     @Override
     public Booking findFirstByItemIdAndBookerIdAndEndBefore(long itemId, long bookerId, LocalDateTime end) {

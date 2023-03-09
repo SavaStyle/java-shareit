@@ -126,7 +126,7 @@ class ItemServiceImpl implements ItemService {
 
     public ItemDtoResponse setBookings(ItemDtoResponse itemDtoResponse) {
         Booking lastBooking = bookingService.findFirstByItemIdAndEndBefore(itemDtoResponse.getId(), LocalDateTime.now());
-        Booking nextBooking = bookingService.findFirstByItemIdAndEndAfter(itemDtoResponse.getId(), LocalDateTime.now());
+        Booking nextBooking = bookingService.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(itemDtoResponse.getId(), LocalDateTime.now());
         if (lastBooking != null) {
             itemDtoResponse.setLastBooking(toBookingDto(lastBooking));
         }

@@ -16,7 +16,9 @@ public interface BookingService {
 
     Booking findFirstByItemIdAndEndBefore(long ownerId, LocalDateTime end);
 
-    Booking findFirstByItemIdAndEndAfter(long ownerId, LocalDateTime end);
+    //  Booking findFirstByItemIdAndEndAfter(long ownerId, LocalDateTime end);
+
+    Booking findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(long itemId, LocalDateTime end);
 
     Booking findFirstByItemIdAndBookerIdAndEndBefore(long itemId, long bookerId, LocalDateTime end);
 }

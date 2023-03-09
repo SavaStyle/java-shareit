@@ -204,7 +204,7 @@ class ItemServiceImplTest {
                 user,
                 BookingStatus.WAITING);
         when(bookingService.findFirstByItemIdAndEndBefore(anyLong(), any())).thenReturn(lastBooking);
-        when(bookingService.findFirstByItemIdAndEndAfter(anyLong(), any())).thenReturn(nextBooking);
+        when(bookingService.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(anyLong(), any())).thenReturn(nextBooking);
 
         ItemDtoResponse response = itemService.setBookings(itemDtoResponse);
         assertEquals(toBookingDto(lastBooking), response.getLastBooking());
