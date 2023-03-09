@@ -1,9 +1,5 @@
 package ru.practicum.shareIt.request;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RequestMapper {
 
     public static Request fromRequestDto(RequestDto requestDto) {

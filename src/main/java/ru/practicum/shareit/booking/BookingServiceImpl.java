@@ -162,7 +162,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking findFirstByItemIdAndEndAfter(long itemId, LocalDateTime end) {
-        return bookingRepository.findFirstByItemIdAndEndAfterOrderByStartAsc(itemId, end);
+        return bookingRepository.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(itemId, end, BookingStatus.REJECTED);
     }
 
     @Override
