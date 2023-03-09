@@ -30,7 +30,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Booking findFirstByItemIdAndEndBeforeOrderByEndDesc(long itemId, LocalDateTime end);
 
-    Booking findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(Long item_id, LocalDateTime end, BookingStatus status);
+    Booking findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(Long itemId, LocalDateTime end, BookingStatus status);
 
     Booking findFirstByItemIdAndBookerIdAndEndBefore(long itemId, long bookerId, LocalDateTime end);
 }
