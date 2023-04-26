@@ -1,6 +1,7 @@
 package ru.practicum.shareIt.booking;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareIt.exception.BadRequestException;
 import ru.practicum.shareIt.exception.NotFoundException;
@@ -82,27 +83,32 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Collection<BookingDtoResponse> getAllByBooker(long bookerId, String state) {
+    public Collection<BookingDtoResponse> getAllByBooker(long bookerId, String state, int from, int size) {
         Collection<Booking> bookingList;
         User user = userRepository.findById(bookerId).orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         switch (state) {
             case "ALL":
-                bookingList = bookingRepository.findAllByBookerIdOrderByStartDesc(bookerId);
+                bookingList = bookingRepository.findAllByBookerIdOrderByStartDesc(bookerId, pageRequest);
                 break;
             case "CURRENT":
-                bookingList = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, LocalDateTime.now(), LocalDateTime.now());
+                bookingList = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, LocalDateTime.now(), LocalDateTime.now(), pageRequest);
                 break;
             case "PAST":
-                bookingList = bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(bookerId, LocalDateTime.now());
+                bookingList = bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(bookerId, LocalDateTime.now(), pageRequest);
                 break;
             case "FUTURE":
-                bookingList = bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(bookerId, LocalDateTime.now());
+                bookingList = bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(bookerId, LocalDateTime.now(), pageRequest);
                 break;
             case "WAITING":
-                bookingList = bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.WAITING);
+                bookingList = bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.WAITING, pageRequest);
                 break;
             case "REJECTED":
-                bookingList = bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.REJECTED);
+                bookingList = bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.REJECTED, pageRequest);
                 break;
             default:
                 throw new StatusException();
@@ -114,27 +120,32 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Collection<BookingDtoResponse> getAllByOwner(long bookerId, String state) {
+    public Collection<BookingDtoResponse> getAllByOwner(long bookerId, String state, int from, int size) {
         Collection<Booking> bookingList;
         User user = userRepository.findById(bookerId).orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        if (size <= 0 || from < 0) {
+            throw new BadRequestException("параметры запроса страниц не верны");
+        }
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         switch (state) {
             case "ALL":
-                bookingList = bookingRepository.findAllByItemOwnerIdOrderByStartDesc(bookerId);
+                bookingList = bookingRepository.findAllByItemOwnerIdOrderByStartDesc(bookerId, pageRequest);
                 break;
             case "CURRENT":
-                bookingList = bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, LocalDateTime.now(), LocalDateTime.now());
+                bookingList = bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, LocalDateTime.now(), LocalDateTime.now(), pageRequest);
                 break;
             case "PAST":
-                bookingList = bookingRepository.findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(bookerId, LocalDateTime.now());
+                bookingList = bookingRepository.findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(bookerId, LocalDateTime.now(), pageRequest);
                 break;
             case "FUTURE":
-                bookingList = bookingRepository.findAllByItemOwnerIdAndStartAfterOrderByStartDesc(bookerId, LocalDateTime.now());
+                bookingList = bookingRepository.findAllByItemOwnerIdAndStartAfterOrderByStartDesc(bookerId, LocalDateTime.now(), pageRequest);
                 break;
             case "WAITING":
-                bookingList = bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.WAITING);
+                bookingList = bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.WAITING, pageRequest);
                 break;
             case "REJECTED":
-                bookingList = bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.REJECTED);
+                bookingList = bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(bookerId, BookingStatus.REJECTED, pageRequest);
                 break;
             default:
                 throw new StatusException();
@@ -149,10 +160,16 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findFirstByItemIdAndEndBeforeOrderByEndDesc(itemId, end);
     }
 
+/*    @Override
+    public Booking findFirstByItemIdAndEndAfter(long ownerId, LocalDateTime end) {
+        return null;
+    }*/
+
     @Override
-    public Booking findFirstByItemIdAndEndAfter(long itemId, LocalDateTime end) {
-        return bookingRepository.findFirstByItemIdAndEndAfterOrderByStartAsc(itemId, end);
+    public Booking findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(long itemId, LocalDateTime end) {
+        return bookingRepository.findFirstByItemIdAndEndAfterAndStatusIsNotOrderByStartAsc(itemId, end, BookingStatus.REJECTED);
     }
+    // findFirstByItemIdAndEndAfter
 
     @Override
     public Booking findFirstByItemIdAndBookerIdAndEndBefore(long itemId, long bookerId, LocalDateTime end) {
