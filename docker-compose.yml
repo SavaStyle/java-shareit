@@ -35,7 +35,3 @@ services:
       - POSTGRES_DB=shareit
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-
