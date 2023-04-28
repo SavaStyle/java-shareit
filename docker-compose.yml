@@ -10,6 +10,10 @@ services:
     environment:
       - SHAREIT_GATEWAY_PORT=8080
       - SHAREIT_SERVER_URL=http://server:9090
+      - TZ=Europe/Moscow
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   server:
     build: server
@@ -23,6 +27,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
       - TZ=Europe/Moscow
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   db:
     image: postgres:13.7-alpine
@@ -33,3 +40,8 @@ services:
       - POSTGRES_DB=shareit
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
+      - TZ=Europe/Moscow
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
