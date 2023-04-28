@@ -74,7 +74,7 @@ class ItemServiceImplTest {
 
     @Test
     void getItemsByOwnerId_ok() {
-        when(itemRepository.findAllByOwnerId(anyLong(), any())).thenReturn(Collections.emptyList());
+        when(itemRepository.findAllByOwnerIdOrderByIdAsc(anyLong(), any())).thenReturn(Collections.emptyList());
         assertTrue(itemService.getItemsByOwnerId(1L, 0, 20).isEmpty());
     }
 

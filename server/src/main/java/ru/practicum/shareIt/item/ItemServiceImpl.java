@@ -45,7 +45,7 @@ class ItemServiceImpl implements ItemService {
         int page = from / size;
         PageRequest pageRequest = PageRequest.of(page, size);
         return repository
-                .findAllByOwnerId(userId, pageRequest)
+                .findAllByOwnerIdOrderByIdAsc(userId, pageRequest)
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .map(this::setBookings)
