@@ -21,13 +21,6 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handlerNotFoundException(NotFoundException e) {
-        log.error(e.toString());
-        return Map.of("404", e.getMessage());
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.toString());
@@ -39,13 +32,6 @@ public class ErrorHandler {
     public Map<String, String> handlerBadRequestException(BadRequestException e) {
         log.error(e.toString());
         return Map.of("400", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handlerInternalException(final Throwable e) {
-        log.error(e.toString());
-        return Map.of("500", e.getMessage());
     }
 
     @ExceptionHandler
